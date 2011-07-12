@@ -1,3 +1,3 @@
-rajouter -Iinc
-rajouter flags de generation de tags
-rajouter flags de generation de dependances
+#rajouter -Iinc
+#rajouter flags de generation de tags
+#rajouter flags de generation de dependences

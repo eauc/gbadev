@@ -1,9 +1,13 @@
+# DEBUG_PREFIX = @echo ++
+
 DEVKITPRO = /opt/devkitpro
 DEVKITARM = $(DEVKITPRO)/devkitARM
 
 EMU_PATH  = /opt/vba
-EMU       = $(EMU_PATH)/VisualBoyAdvance
+EMU_CMD   = $(EMU_PATH)/VisualBoyAdvance
 EMU_OPT   = 
+
+TAGSFILE = TAGS
 
 PATH      := $(DEVKITARM)/bin:$(PATH)
 
@@ -14,7 +18,9 @@ AS        = $(PREFIX)as
 LD        = $(PREFIX)gcc
 AR        = $(PREFIX)ar rcs
 OBJCOPY   = $(PREFIX)objcopy
-GBAFIX    = gbafix
+GBAFIX    = $(DEBUG_PREFIX) gbafix
+EMU       = $(DEBUG_PREFIX) $(EMU_CMD)
+TAGSCMD   = etags
 
 ARCH      = -mthumb -mthumb-interwork
 
@@ -22,6 +28,15 @@ CFLAGS    = -Wall -Wextra -O2\
 	    -mcpu=arm7tdmi -mtune=arm7tdmi\
 	    -fno-strict-aliasing\
 	    $(ARCH) \
-            -I$(INCDIR)
+            -I$(INCDIR) \
+	    -I$(dir $<)
+# CFLAGS    = -Wall -Wextra -O2\
+# 	    -fno-strict-aliasing\
+# 	    $(ARCH) \
+#             -I$(INCDIR) \
+# 	    -I$(dir $<) \
+# 	    -MMD -MP -MT $@
 ASFLAGS   = $(ARCH)
 LDFLAGS   = $(ARCH) -specs=gba.specs
+# LDFLAGS   = $(ARCH)
+TAGSFLAGS = --declarations

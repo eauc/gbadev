@@ -14,14 +14,19 @@ TESTDIR = test
 PROGDIRS = $(addprefix $(PROGDIR)/,$(PROG))
 TESTDIRS = $(addprefix $(TESTDIR)/,$(TEST))
 
-include toolchain.mk
 include $(LIBDIR)/Makefile
 -include $(PROGDIRS:=/Makefile)
 -include $(TESTDIRS:=/Makefile)
 
+include toolchain.mk
 include lib_rules.mk
 include prog_rules.mk
 include test_rules.mk
+
+-include $(OBJDIR)/*.d
+
+.PHONY : TAGS
+TAGS : $(PROG_TAGS) $(TEST_TAGS) $(LIB_TAGS)
 
 .PHONY : clean_all
 clean_all : clean

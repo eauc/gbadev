@@ -1,5 +1,6 @@
 TESTS = $(addprefix test-,$(TEST))
 TESTS_RUN = $(addprefix run-,$(TESTS))
+TEST_TAGS = $(addsuffix /$(TAGSFILE),$(TESTDIRS))
 
 .PHONY : $(TESTS_RUN)
 $(TESTS_RUN) : run-% : $(OBJDIR)/%.gba
@@ -15,3 +16,6 @@ $(OBJDIR)/test-%.elf : $(OBJDIR)/test-$$*-$$(subst .c,.o,$$(test_$$*_CSOURCES)) 
 .SECONDEXPANSION:
 $(OBJDIR)/test-%.o : $(TESTDIR)/$$(subst -,/,$$*.c)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TEST_TAGS) :: %/TAGS :
+	$(TAGSCMD) $(TAGSFLAGS) -i $(CURDIR)/$(LIB_TAGS) -o $@ $*/*.c $*/*.h 2>/dev/null

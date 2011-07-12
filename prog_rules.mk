@@ -19,3 +19,6 @@ $(OBJDIR)/%.elf : $(OBJDIR)/$$*-$$(subst .c,.o,$$($$*_CSOURCES)) $(LIB_OBJECTS)
 .SECONDEXPANSION:
 $(OBJDIR)/%.o : $(PROGDIR)/$$(subst -,/,$$*.c)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(PROG_TAGS) :: %/TAGS :
+	$(TAGSCMD) $(TAGSFLAGS) -i $(CURDIR)/$(LIB_TAGS) -o $@ $*/*.c $*/*.h 2>/dev/null
