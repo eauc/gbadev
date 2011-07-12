@@ -59,7 +59,7 @@ typedef struct display_vcount_tag {
 
 #define REG_DISPLAY_CONTROL (*_reg_display_control)
 #define REG_DISPLAY_STATUS  (*_reg_display_status)
-#define REG_DISPLAY_VCOUNT  ((*_reg_display_vcount).value)
+#define REG_DISPLAY_VCOUNT  (_reg_display_vcount->value)
 
 void display_control_init(void);
 

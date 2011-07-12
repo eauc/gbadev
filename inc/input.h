@@ -68,15 +68,18 @@ INLINE void input_poll() {
 
   input_previous_status = input_current_status;
   input_current_status = REG_INPUT_STATUS;
-  *((u32 *)&input_changed_status) = (*((u32 *)&input_current_status)) ^ (*((u32 *)&input_previous_status));
-  *((u32 *)&input_hit_status) = (*((u32 *)&input_changed_status)) & (*((u32 *)&input_previous_status));
-  *((u32 *)&input_released_status) = (*((u32 *)&input_changed_status)) & (*((u32 *)&input_current_status));
+  *( (u32 *)&input_changed_status ) = 
+    (*( (u32 *)&input_current_status )) ^ (*( (u32 *)&input_previous_status ));
+  *( (u32 *)&input_hit_status ) = 
+    (*( (u32 *)&input_changed_status )) & (*( (u32 *)&input_previous_status ));
+  *( (u32 *)&input_released_status ) = 
+    (*( (u32 *)&input_changed_status )) & (*( (u32 *)&input_current_status ));
 
 }
 
 INLINE bool_t input_active() {
 
-  return ((*((u32 *)&input_current_status)) ^ 0xFFFF) ? TRUE : FALSE;
+  return (( *( (u32 *)&input_current_status ) ) ^ 0xFFFF) ? TRUE : FALSE;
 
 }
 

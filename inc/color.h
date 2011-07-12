@@ -17,7 +17,7 @@ typedef u16 color_t;
 #define RGB15_CIAN    ((color_t)0x7FE0)
 #define RGB15_BLUE    ((color_t)0x7C00)
 #define RGB15_PURPLE  ((color_t)0x7C1F)
-#define RGB15_WHITE   ((color_t)0xFFFF)
+#define RGB15_WHITE   ((color_t)0x7FFF)
 
 INLINE color_t RGB15(u32 red,
 		     u32 green,
@@ -35,8 +35,8 @@ typedef color_t palette_8bpp_t[256];
 typedef color_t palette_4bpp_t[16];
 typedef palette_8bpp_t palette_t;
 
-#define PALBLOCK_8BPP_MAX (MEM_PALETTE_SIZE/sizeof(palette_8bpp_t))
-#define PALBLOCK_4BPP_MAX (MEM_PALETTE_SIZE/sizeof(palette_4bpp_t))
+#define PALBLOCK_8BPP_MAX (MEM_PALETTE_SIZE / sizeof(palette_8bpp_t))
+#define PALBLOCK_4BPP_MAX (MEM_PALETTE_SIZE / sizeof(palette_4bpp_t))
 
 typedef palette_8bpp_t   palblock_8bpp_t[PALBLOCK_8BPP_MAX];
 typedef palette_4bpp_t   palblock_4bpp_t[PALBLOCK_4BPP_MAX];

@@ -11,11 +11,12 @@
 
 #define M4_MEM_VIDEO      ((u16 *) MEM_VIDEO)
 #define M4_MEM_PAGE_FLIP  0xA000
-#define m4_vid_page       ((u16 *) MEM_VIDEO)
+
+extern u16 *m4_vid_page;
 
 INLINE void m4_page_flip() {
 
-  m4_vid_page = (u16 *)(((u32)m4_vid_page) ^ M4_MEM_PAGE_FLIP);
+  m4_vid_page = (u16 *)( ((u32)m4_vid_page) ^ M4_MEM_PAGE_FLIP );
   REG_DISPLAY_CONTROL.render_page ^= 0x01;
 
 }

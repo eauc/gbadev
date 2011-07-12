@@ -29,7 +29,7 @@ int main(void) {
   color_t released = RGB15_PURPLE;
   color_t down = RGB15_GREEN;
 
-  input_status_t previous_change  = {0,0,0,0,0,0,0,0,0,0,0};
+  input_status_t previous_change  = {0,0,0,0,0,0,0,0,0,0};
 
   busy_wait_vsync();
 
@@ -54,7 +54,7 @@ int main(void) {
 
   while(1) {
 
-    count = (count + 1) % 1500;
+    count = (count + 1) % 10;
     busy_wait_vsync();
     if(0 == count) {
 

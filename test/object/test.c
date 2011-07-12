@@ -7,12 +7,13 @@
 
 int main(void) {
 
-  object_block_t object_buffer = {{0,0},};
-  object_attrblock_pt object_attribute_buffer = (object_attrblock_pt)object_buffer;
+  object_block_t object_buffer = { { {0, 0} }, };
+  object_attrblock_pt object_attribute_buffer = 
+    (object_attrblock_pt)object_buffer;
   u32 count = 0;
   bool_t changed = FALSE;
 
-  wait_vsync();
+  busy_wait_vsync();
 
   display_control_init();
   REG_DISPLAY_CONTROL.render_object = TRUE;
@@ -23,9 +24,9 @@ int main(void) {
   MEM_PALBLOCK_4BPP[PALBLOCK_4BPP_OBJECT+1][1] = RGB15_BLUE;
   MEM_PALBLOCK_4BPP[PALBLOCK_4BPP_OBJECT+1][2] = RGB15_PURPLE;
 
-  memset(MEM_TILE_8BPP,0,CHARBLOCK_MAX * sizeof(charblock_4bpp_t));
-  memset(MEM_TILE[CHARBLOCK_OBJECT][0],0x11,sizeof(tile_t));
-  memset(MEM_TILE[CHARBLOCK_OBJECT][3],0x22,sizeof(tile_t));
+  memset(MEM_TILE,0,CHARBLOCK_MAX * sizeof(charblock_4bpp_t));
+  memset(MEM_TILE[CHARBLOCK_OBJECT]+0,0x11,sizeof(tile_t));
+  memset(MEM_TILE[CHARBLOCK_OBJECT]+3,0x22,sizeof(tile_t));
 
   object_init(object_buffer,OBJECT_MAX);
   object_copy(MEM_OBJECT,object_buffer,OBJECT_MAX);
@@ -39,7 +40,7 @@ int main(void) {
 
   while(1) {
 
-    wait_vsync();
+    busy_wait_vsync();
     count = (count + 1) % 1;
     if(0 == count) {
 

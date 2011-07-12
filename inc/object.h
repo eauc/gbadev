@@ -46,7 +46,11 @@ enum {
 
 };
 
-typedef u32 object_t[2];
+typedef struct object_tag {
+
+  u32 data[2];
+
+} ALIGN_WORD object_t;
 
 typedef struct object_attribute_tag {
 
@@ -121,14 +125,18 @@ u32 /*unused*/:16;
 #define OBJECT_AFFINE_MAX    (MEM_OAM_SIZE / sizeof(object_affine_t))
 
 typedef object_t                  object_block_t[OBJECT_MAX];
+typedef object_t                  *object_block_pt;
 typedef object_attribute_t        object_attrblock_t[OBJECT_MAX];
+typedef object_attribute_t        *object_attrblock_pt;
 typedef object_affine_attribute_t object_affattrblock_t[OBJECT_ATTRIBUTE_MAX];
+typedef object_affine_attribute_t *object_affattrblock_pt;
 typedef object_affine_t           object_affblock_t[OBJECT_AFFINE_MAX];
+typedef object_affine_t           *object_affblock_pt;
 
-#define MEM_OBJECT                   ((object_block_t *)        MEM_OAM)
-#define MEM_OBJECT_ATTRIBUTE         ((object_attrblock_t *)    MEM_OAM)
-#define MEM_OBJECT_AFFINE_ATTRIBUTE  ((object_affattrblock_t *) MEM_OAM)
-#define MEM_OBJECT_AFFINE            ((object_affblock_t *)     MEM_OAM)
+#define MEM_OBJECT                   ((object_block_pt)        MEM_OAM)
+#define MEM_OBJECT_ATTRIBUTE         ((object_attrblock_pt)    MEM_OAM)
+#define MEM_OBJECT_AFFINE_ATTRIBUTE  ((object_affattrblock_pt) MEM_OAM)
+#define MEM_OBJECT_AFFINE            ((object_affblock_pt)     MEM_OAM)
 
 extern object_attribute_t const OBJECT_ATTRIBUTE_INIT;
 
@@ -155,10 +163,10 @@ INLINE void object_attribute_set_pos(object_attribute_t *obj_attr,
 
 }
 
-void object_init(object_block_t *buffer,
+void object_init(object_block_t buffer,
 		 u32 buffer_size);
-void object_copy(object_block_t *dst,
-		 object_block_t *src,
+void object_copy(object_block_t dst,
+		 object_block_t src,
 		 u32 src_size);
 
 #endif

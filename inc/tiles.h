@@ -19,9 +19,9 @@ typedef struct tile_8bpp_tag {
 typedef tile_4bpp_t tile_t;
 
 #define CHARBLOCK_MAX            6
-#define CHARBLOCK_SIZE           (MEM_VIDEO_SIZE/CHARBLOCK_MAX)
-#define CHARBLOCK_TILE_8BPP_MAX  (CHARBLOCK_SIZE/sizeof(tile_8bpp_t))
-#define CHARBLOCK_TILE_4BPP_MAX  (CHARBLOCK_SIZE/sizeof(tile_4bpp_t))
+#define CHARBLOCK_SIZE           (MEM_VIDEO_SIZE / CHARBLOCK_MAX)
+#define CHARBLOCK_TILE_8BPP_MAX  (CHARBLOCK_SIZE / sizeof(tile_8bpp_t))
+#define CHARBLOCK_TILE_4BPP_MAX  (CHARBLOCK_SIZE / sizeof(tile_4bpp_t))
 
 typedef tile_4bpp_t charblock_4bpp_t[CHARBLOCK_TILE_4BPP_MAX];
 typedef tile_8bpp_t charblock_8bpp_t[CHARBLOCK_TILE_8BPP_MAX];
