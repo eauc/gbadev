@@ -1,3 +1,10 @@
+PROG_RUN = $(addprefix run-,$(PROG))
+PROG_TAGS = $(addsuffix /$(TAGSFILE),$(PROGDIRS))
+
+.PHONY : $(PROG_RUN)
+$(PROG_RUN) : run-% : $(OBJDIR)/%.gba
+	$(EMU) $<
+
 .PHONY : $(PROG)
 $(PROG) : % : $(OBJDIR)/%.gba
 
