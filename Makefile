@@ -1,0 +1,32 @@
+PROG = essai
+TEST =  default \
+	bckgnd  \
+	input   \
+	object  \
+	plot
+
+INCDIR  = inc
+LIBDIR  = lib
+OBJDIR  = obj
+PROGDIR = prog
+TESTDIR = test
+
+PROGDIRS = $(addprefix $(PROGDIR)/,$(PROG))
+TESTDIRS = $(addprefix $(TESTDIR)/,$(TEST))
+
+include toolchain.mk
+include $(LIBDIR)/Makefile
+-include $(PROGDIRS:=/Makefile)
+-include $(TESTDIRS:=/Makefile)
+
+include lib_rules.mk
+include prog_rules.mk
+include test_rules.mk
+
+.PHONY : clean_all
+clean_all : clean
+	rm -fv $(OBJDIR)/*
+
+.PHONY : clean
+clean :
+	rm -fv $(OBJDIR)/*.o

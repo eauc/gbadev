@@ -1,0 +1,1 @@
+test_input_CSOURCES = test.c

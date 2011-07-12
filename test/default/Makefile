@@ -1,0 +1,1 @@
+test_default_CSOURCES = test.c

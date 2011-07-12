@@ -1,0 +1,1 @@
+test_object_CSOURCES = test.c
