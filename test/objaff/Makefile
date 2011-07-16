@@ -1,0 +1,1 @@
+test_objaff_CSOURCES = test.c

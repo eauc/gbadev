@@ -24,13 +24,6 @@ enum {
 
 enum {
 
-  PALETTE_4BPP = 0,
-  PALETTE_8BPP = 1
-
-};
-
-enum {
-
   SHAPE_SQUARE = 0x00,
   SHAPE_WIDE   = 0x01,
   SHAPE_TALL   = 0x10
@@ -45,6 +38,8 @@ enum {
   SIZE_64 = 0x11
 
 };
+
+extern u32 const object_sizes[4][3][2];
 
 typedef struct object_tag {
 

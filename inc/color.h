@@ -33,7 +33,6 @@ INLINE color_t RGB15(u32 red,
 
 typedef color_t palette_8bpp_t[256];
 typedef color_t palette_4bpp_t[16];
-typedef palette_8bpp_t palette_t;
 
 #define PALBLOCK_8BPP_MAX (MEM_PALETTE_SIZE / sizeof(palette_8bpp_t))
 #define PALBLOCK_4BPP_MAX (MEM_PALETTE_SIZE / sizeof(palette_4bpp_t))
@@ -48,7 +47,7 @@ typedef palette_8bpp_index_t palette_index_t;
 
 #define MEM_PALBLOCK_8BPP  ((palette_8bpp_t *) MEM_PALETTE)
 #define MEM_PALBLOCK_4BPP  ((palette_4bpp_t *) MEM_PALETTE)
-#define MEM_PALBLOCK       ((palette_t *)      MEM_PALETTE)
+#define MEM_PALBLOCK       ((palette_8bpp_t *) MEM_PALETTE)
 
 #define PALBLOCK_8BPP_BACKGROUND 0
 #define PALBLOCK_4BPP_BACKGROUND 0

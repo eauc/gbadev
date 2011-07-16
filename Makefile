@@ -1,7 +1,10 @@
 PROG = essai
 TEST =  default \
 	bckgnd  \
+	bgdaff  \
+	effects \
 	input   \
+	objaff  \
 	object  \
 	plot
 

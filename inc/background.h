@@ -7,13 +7,6 @@
 
 enum {
 
-  PALETTE_4BPP = 0,
-  PALETTE_8BPP = 1
-
-};
-
-enum {
-
   REGULAR_SIZE_32_32 = 0x00,
   REGULAR_SIZE_64_32 = 0x01,
   REGULAR_SIZE_32_64 = 0x02,
@@ -45,14 +38,14 @@ u32 /*unused*/:2;
 
 typedef struct background_control_affine_tag {
 
-  s16 pa;
-  s16 pb;
-  s16 pc;
-  s16 pd;
-  u32 dx;
-  u32 dy;
+  s16 attr0;
+  s16 attr1;
+  s16 attr2;
+  s16 attr3;
+  s32 dx;
+  s32 dy;
 
-} ALIGN_WORD background_affine_control_t;
+} ALIGN_WORD background_affine_t;
 
 typedef struct background_offset_tag {
 
@@ -61,19 +54,28 @@ typedef struct background_offset_tag {
 
 } ALIGN_WORD background_offset_t;
 
-#define _reg_background0_affine_control  ((background_affine_control_t *)(MEM_IO + 0x0008))
+#define _reg_background0_control \
+  ((background_control_t *)(MEM_IO + 0x0008))
+#define _reg_background1_control \
+  ((background_control_t *)(MEM_IO + 0x000A))
+#define _reg_background2_control \
+  ((background_control_t *)(MEM_IO + 0x000C))
+#define _reg_background3_control \
+  ((background_control_t *)(MEM_IO + 0x000E))
 
-#define _reg_background0_control         ((background_control_t *)(MEM_IO + 0x0008))
-#define _reg_background1_control         ((background_control_t *)(MEM_IO + 0x000A))
-#define _reg_background2_control         ((background_control_t *)(MEM_IO + 0x000C))
-#define _reg_background3_control         ((background_control_t *)(MEM_IO + 0x000E))
+#define _reg_background0_offset \
+  ((background_offset_t *)(MEM_IO + 0x0010))
+#define _reg_background1_offset \
+  ((background_offset_t *)(MEM_IO + 0x0014))
+#define _reg_background2_offset \
+  ((background_offset_t *)(MEM_IO + 0x0018))
+#define _reg_background3_offset \
+  ((background_offset_t *)(MEM_IO + 0x001C))
 
-#define _reg_background0_offset          ((background_offset_t *)(MEM_IO + 0x0010))
-#define _reg_background1_offset          ((background_offset_t *)(MEM_IO + 0x0014))
-#define _reg_background2_offset          ((background_offset_t *)(MEM_IO + 0x0018))
-#define _reg_background3_offset          ((background_offset_t *)(MEM_IO + 0x001C))
-
-#define REG_BACKGROUND0_AFFINE_CONTROL (*_reg_background0_affine_control)
+#define _reg_background2_affine \
+  ((background_affine_t *)(MEM_IO + 0x0020))
+#define _reg_background3_affine \
+  ((background_affine_t *)(MEM_IO + 0x0030))
 
 #define REG_BACKGROUND0_CONTROL        (*_reg_background0_control)
 #define REG_BACKGROUND1_CONTROL        (*_reg_background1_control)
@@ -84,6 +86,9 @@ typedef struct background_offset_tag {
 #define REG_BACKGROUND1_OFFSET         (*_reg_background1_offset)
 #define REG_BACKGROUND2_OFFSET         (*_reg_background2_offset)
 #define REG_BACKGROUND3_OFFSET         (*_reg_background3_offset)
+
+#define REG_BACKGROUND2_AFFINE         (*_reg_background2_affine)
+#define REG_BACKGROUND3_AFFINE         (*_reg_background3_affine)
 
 typedef struct screen_entry_tag {
 

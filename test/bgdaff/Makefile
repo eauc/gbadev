@@ -1,0 +1,1 @@
+test_bgdaff_CSOURCES = test.c

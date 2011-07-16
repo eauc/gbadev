@@ -14,6 +14,25 @@ object_attribute_t const OBJECT_ATTRIBUTE_INIT = {0,
 						  0,
 						  0};
 
+u32 const object_sizes[4][3][2] = 
+  { // SIZE_8
+    { // SQUARE - WIDE - TALL
+      { 8, 8, }, { 16, 8, }, { 8, 16, }, 
+    },
+    // SIZE_16
+    { // SQUARE - WIDE - TALL
+      { 16, 16, }, { 32, 8, }, { 8, 32, }, 
+    },
+    // SIZE_32
+    { // SQUARE - WIDE - TALL
+      { 32, 32, }, { 32, 16, }, { 16, 32, }, 
+    },
+    // SIZE_64
+    { // SQUARE - WIDE - TALL
+      { 64, 64, }, { 64, 32, }, { 32, 64, }, 
+    },
+  };
+
 void object_init(object_block_t buffer,
 		 u32 buffer_size) {
 

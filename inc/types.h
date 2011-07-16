@@ -49,4 +49,11 @@ typedef enum bool_tag {
 
 } bool_t;
 
+typedef enum palette_tag {
+
+  PALETTE_4BPP = 0,
+  PALETTE_8BPP = 1
+
+} palette_t;
+
 #endif
