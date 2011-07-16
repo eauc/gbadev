@@ -16,9 +16,9 @@ enum {
 enum {
 
   GFX_MODE_NORMAL         = 0x00,
-  GFX_MODE_ALPHA_BLENDING = 0x01,
-  GFX_MODE_WINDOW         = 0x10,
-  GFX_MODE_FORBIDDEN      = 0x11
+  GFX_MODE_BLEND          = 0x01,
+  GFX_MODE_WINDOW         = 0x02,
+  GFX_MODE_FORBIDDEN      = 0x03
 
 };
 
@@ -26,7 +26,7 @@ enum {
 
   SHAPE_SQUARE = 0x00,
   SHAPE_WIDE   = 0x01,
-  SHAPE_TALL   = 0x10
+  SHAPE_TALL   = 0x02
 
 };
 
@@ -34,8 +34,8 @@ enum {
 
   SIZE_8  = 0x00,
   SIZE_16 = 0x01,
-  SIZE_32 = 0x10,
-  SIZE_64 = 0x11
+  SIZE_32 = 0x02,
+  SIZE_64 = 0x03
 
 };
 

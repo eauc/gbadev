@@ -1,0 +1,1 @@
+test_effects_CSOURCES = test.c
