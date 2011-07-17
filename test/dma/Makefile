@@ -1,0 +1,1 @@
+test_dma_CSOURCES = test.c

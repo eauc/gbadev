@@ -1,3 +1,4 @@
 #rajouter -Iinc
 #rajouter flags de generation de tags
 #rajouter flags de generation de dependences
+verifier les ALIGN,volatile,types/mem dans tous les headers

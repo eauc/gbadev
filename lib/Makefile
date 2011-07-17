@@ -3,6 +3,7 @@ LIB_CSOURCES =       \
 	angle.c      \
 	bmp16_plot.c \
 	display.c    \
+	dma.c        \
 	input.c      \
 	lut_sinus.c  \
 	m4.c         \

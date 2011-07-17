@@ -29,7 +29,8 @@ CFLAGS    = -Wall -Wextra -O2\
 	    -fno-strict-aliasing\
 	    $(ARCH) \
             -I$(INCDIR) \
-	    -I$(dir $<)
+	    -I$(dir $<) \
+	    -MMD -MP -MT $@
 # CFLAGS    = -Wall -Wextra -O2\
 # 	    -fno-strict-aliasing\
 # 	    $(ARCH) \

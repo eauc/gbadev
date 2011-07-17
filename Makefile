@@ -2,6 +2,7 @@ PROG = essai
 TEST =  default \
 	bckgnd  \
 	bgdaff  \
+	dma     \
 	effects \
 	input   \
 	objaff  \
