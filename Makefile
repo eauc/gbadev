@@ -7,7 +7,8 @@ TEST =  default \
 	input   \
 	objaff  \
 	object  \
-	plot
+	plot    \
+	timer
 
 INCDIR  = inc
 LIBDIR  = lib
