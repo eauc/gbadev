@@ -5,6 +5,7 @@ LIB_CSOURCES =       \
 	display.c    \
 	dma.c        \
 	input.c      \
+	interrupt.arm.c \
 	lut_sinus.c  \
 	m4.c         \
 	object.c

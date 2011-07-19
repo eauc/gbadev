@@ -5,6 +5,7 @@ TEST =  default \
 	dma     \
 	effects \
 	input   \
+	interrupt \
 	objaff  \
 	object  \
 	plot    \
