@@ -48,7 +48,7 @@ typedef union dma_control_tag {
 
   };
 
-} PACKED ALIGN_HALF_WORD dma_control_t;
+} ALIGN_HALF_WORD dma_control_t;
 
 typedef struct dma_tag {
 
@@ -57,7 +57,7 @@ typedef struct dma_tag {
   dma_count_t count;
   dma_control_t control;
 
-} PACKED ALIGN_WORD dma_t;
+} ALIGN_WORD dma_t;
 
 #define REG_DMA  ((dma_t *) (MEM_IO + 0x00B0))
 
