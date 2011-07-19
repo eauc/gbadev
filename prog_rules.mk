@@ -18,7 +18,11 @@ $(OBJDIR)/%.elf : $(OBJDIR)/$$*-$$(subst .c,.o,$$($$*_CSOURCES)) $(LIB_OBJECTS)
 
 .SECONDEXPANSION:
 $(OBJDIR)/%.o : $(PROGDIR)/$$(subst -,/,$$*.c)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(ARCH_THUMB) -c $< -o $@
+
+.SECONDEXPANSION:
+$(OBJDIR)/%.arm.o : $(PROGDIR)/$$(subst -,/,$$*.arm.c)
+	$(CC) $(CFLAGS) $(ARCH_ARM) -c $< -o $@
 
 $(PROG_TAGS) :: %/TAGS :
 	$(TAGSCMD) $(TAGSFLAGS) -i $(CURDIR)/$(LIB_TAGS) -o $@ $*/*.c $*/*.h 2>/dev/null

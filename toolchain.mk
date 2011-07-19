@@ -22,22 +22,22 @@ GBAFIX    = $(DEBUG_PREFIX) gbafix
 EMU       = $(DEBUG_PREFIX) $(EMU_CMD)
 TAGSCMD   = etags
 
-ARCH      = -mthumb -mthumb-interwork
+ARCH       = -mthumb-interwork -mlong-calls
+ARCH_THUMB = -mthumb $(ARCH)
+ARCH_ARM   = -marm $(ARCH)
 
 CFLAGS    = -Wall -Wextra -O2\
 	    -mcpu=arm7tdmi -mtune=arm7tdmi\
 	    -fno-strict-aliasing\
-	    $(ARCH) \
-            -I$(INCDIR) \
+          -I$(INCDIR) \
 	    -I$(dir $<) \
 	    -MMD -MP -MT $@
 # CFLAGS    = -Wall -Wextra -O2\
 # 	    -fno-strict-aliasing\
-# 	    $(ARCH) \
 #             -I$(INCDIR) \
 # 	    -I$(dir $<) \
 # 	    -MMD -MP -MT $@
-ASFLAGS   = $(ARCH)
+ASFLAGS   = $(ARCH_THUMB)
 LDFLAGS   = $(ARCH) -specs=gba.specs
 # LDFLAGS   = $(ARCH)
 TAGSFLAGS = --declarations

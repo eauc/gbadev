@@ -25,8 +25,8 @@ include $(LIBDIR)/Makefile
 
 include toolchain.mk
 include lib_rules.mk
-include prog_rules.mk
 include test_rules.mk
+include prog_rules.mk
 
 -include $(OBJDIR)/*.d
 

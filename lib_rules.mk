@@ -5,8 +5,11 @@ LIB_TAGS = $(LIBDIR)/$(TAGSFILE)
 $(LIB_TARGET) : $(LIB_OBJECTS)
 	$(AR) $@ $^
 
-$(LIB_OBJECTS): $(OBJDIR)/lib-%.o : $(LIBDIR)/%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJDIR)/lib-%.arm.o : $(LIBDIR)/%.arm.c
+	$(CC) $(CFLAGS) $(ARCH_ARM) -c $< -o $@
+
+$(OBJDIR)/lib-%.o : $(LIBDIR)/%.c
+	$(CC) $(CFLAGS) $(ARCH_THUMB) -c $< -o $@
 
 $(LIB_TAGS) ::
 	$(TAGSCMD) $(TAGSFLAGS) -o $@ $(LIBDIR)/*.c $(LIBDIR)/*.h $(INCDIR)/*.h 2>/dev/null
