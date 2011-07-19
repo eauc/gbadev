@@ -84,6 +84,13 @@ int main(void) {
   u32 se_curr = 0;
   u32 se_prev = CROSS_TY * 32 + CROSS_TX;
   u16 seconds = 0;
+  timer_control_t timer2 = {
+    .frequency = TIMER_FREQ_1024,
+  };
+  timer_control_t timer3 = {
+    .cascade = TRUE,
+    .enable = TRUE,
+  };
 
   bg0_map = MEM_MAP[SBB_0];
 
@@ -97,10 +104,9 @@ int main(void) {
   bg0_map[se_prev].tile_index++;
 
   REG_TIMER[2].data = -0x4000;
-  REG_TIMER[2].control.frequency = TIMER_FREQ_1024;
+  REG_TIMER[2].control = timer2;
   REG_TIMER[3].data = 0;
-  REG_TIMER[3].control.cascade = TRUE;
-  REG_TIMER[3].control.enable = TRUE;
+  REG_TIMER[3].control = timer3;
 
   while(1) {
 
@@ -110,21 +116,23 @@ int main(void) {
 
     if(input_hit_status.start) {
 
-      REG_TIMER[2].control.enable ^= TRUE;
-
+      timer2.enable ^= TRUE;
+      REG_TIMER[2].control = timer2;
+      
     }
     if(input_hit_status.select) {
 
-      REG_TIMER[3].control.cascade ^= TRUE;
+      timer2.cascade ^= TRUE;
+      REG_TIMER[2].control = timer2;
 
     }
     if(REG_TIMER[3].data != seconds) {
 
       seconds = REG_TIMER[3].data;
-      MEM_PALBLOCK_4BPP[0][1] = colors[seconds % 4];
-      MEM_PALBLOCK_4BPP[1][1] = colors[(seconds >> 1) % 4];
-      MEM_PALBLOCK_4BPP[2][1] = colors[(seconds >> 2) % 4];
-      MEM_PALBLOCK_4BPP[3][1] = colors[(seconds >> 3) % 4];
+      MEM_PALBLOCK_4BPP[0][1] = colors[seconds & 0x03];
+      MEM_PALBLOCK_4BPP[1][1] = colors[(seconds >> 1) & 0x03];
+      MEM_PALBLOCK_4BPP[2][1] = colors[(seconds >> 2) & 0x03];
+      MEM_PALBLOCK_4BPP[3][1] = colors[(seconds >> 3) & 0x03];
 
     }
 
