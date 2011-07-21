@@ -2,6 +2,7 @@ PROG = essai
 TEST =  default \
 	bckgnd  \
 	bgdaff  \
+	bios    \
 	dma     \
 	effects \
 	input   \

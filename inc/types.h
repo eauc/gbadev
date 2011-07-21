@@ -12,6 +12,7 @@
 #define ALIGN_HALF_WORD __attribute__((aligned(sizeof(short))))
 #define ALIGN_WORD      __attribute__((aligned(sizeof(int))))
 #define PACKED          __attribute__((packed))
+#define UNUSED          __attribute__((unused))
 
 #define IWRAM_DATA   __attribute__((section(".iwram")))
 #define EWRAM_DATA   __attribute__((section(".ewram")))
@@ -48,7 +49,9 @@ typedef signed int   s32;
   CONSTANTS
 */
 
+#ifndef NULL
 #define NULL ((void *)0)
+#endif
 
 typedef enum bool_tag {
 

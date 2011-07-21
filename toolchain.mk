@@ -22,9 +22,9 @@ GBAFIX    = $(DEBUG_PREFIX) gbafix
 EMU       = $(DEBUG_PREFIX) $(EMU_CMD)
 TAGSCMD   = etags
 
-ARCH       = -mthumb-interwork -mlong-calls
+ARCH       = -mthumb-interwork
 ARCH_THUMB = -mthumb $(ARCH)
-ARCH_ARM   = -marm $(ARCH)
+ARCH_ARM   = -marm -mlong-calls $(ARCH)
 
 CFLAGS    = -Wall -Wextra -O2\
 	    -mcpu=arm7tdmi -mtune=arm7tdmi\
@@ -37,7 +37,6 @@ CFLAGS    = -Wall -Wextra -O2\
 #             -I$(INCDIR) \
 # 	    -I$(dir $<) \
 # 	    -MMD -MP -MT $@
-ASFLAGS   = $(ARCH_THUMB)
+ASFLAGS   = 
 LDFLAGS   = $(ARCH) -specs=gba.specs
-# LDFLAGS   = $(ARCH)
 TAGSFLAGS = --declarations

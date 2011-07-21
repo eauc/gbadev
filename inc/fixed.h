@@ -2,6 +2,7 @@
 #define FIXED_H_
 
 #include <types.h>
+#include <bios.h>
 
 typedef s32 sfixe;
 typedef u32 ufixe;
@@ -15,6 +16,6 @@ typedef u32 ufixe;
 #define fixe(num,dec) ( (dec & FIXE_FORMAT_MASK) + ((num << FIXE_FORMAT) & ~FIXE_FORMAT_MASK) )
 #define fint(a)       (a >> FIXE_FORMAT)
 #define fmul(a,b)     ((a * b) >> FIXE_FORMAT)
-#define fdiv(a,b)     ((a << FIXE_FORMAT) / b)
+#define fdiv(a,b)     ((sfixe)bios_div(a << FIXE_FORMAT, b))
 
 #endif

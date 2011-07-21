@@ -9,3 +9,5 @@ LIB_CSOURCES =       \
 	lut_sinus.c  \
 	m4.c         \
 	object.c
+LIB_ASOURCES =       \
+	bios.s

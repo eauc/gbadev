@@ -3,6 +3,8 @@
 #include <background.h>
 #include <color.h>
 #include <affine.h>
+#include <interrupt.h>
+#include <bios.h>
 
 void init_map() {
 
@@ -100,21 +102,22 @@ void init_map() {
 
 int main(void) {
 
-  s32 dx = 0;
-  s32 dy = 0;
   affine_t current_affine = identity;
 
-  busy_wait_vsync();
+  interrupt_init_vector();
+  interrupt_add(INTERRUPT_VBLANK, NULL);
+  REG_INTERRUPT_MASTER_ENABLE = TRUE;
 
   init_map();
   display_control_init();
   REG_DISPLAY_CONTROL.mode = 1;
   REG_DISPLAY_CONTROL.render_background2 = TRUE;
   REG_DISPLAY_CONTROL.render_object = TRUE;
+  REG_DISPLAY_STATUS.enable_vblank_irq = TRUE;
 
   while(1) {
 
-    busy_wait_vsync();
+    bios_wait_vsync();
 
     input_poll();
 
@@ -123,7 +126,31 @@ int main(void) {
       current_affine = identity;
 
     }
-    if(KEY_DOWN == input_current_status.select) {
+    if(KEY_DOWN == input_current_status.A) {
+
+      if(KEY_DOWN == input_current_status.right) {
+
+	current_affine.scale.x += 1;
+
+      }
+      else if(KEY_DOWN == input_current_status.left) {
+
+	current_affine.scale.x -= 1;
+
+      }
+      if(KEY_DOWN == input_current_status.up) {
+
+	current_affine.scale.y -= 1;
+
+      }
+      else if(KEY_DOWN == input_current_status.down) {
+
+	current_affine.scale.y += 1;
+
+      }
+
+    }
+    else if(KEY_DOWN == input_current_status.select) {
 
       if(KEY_DOWN == input_current_status.right) {
 
@@ -181,7 +208,9 @@ int main(void) {
       current_affine.rotation -= 1<<6;
 
     }
-    affine_to_background(_reg_background2_affine,&current_affine);
+    affine_to_background(_reg_background2_affine,
+			 &current_affine,
+			 1);
       
     /* tx = ((bg0_offset.X >> 3) + CROSS_TX) & 0x3F; */
     /* ty = ((bg0_offset.Y >> 3) + CROSS_TY) & 0x3F; */

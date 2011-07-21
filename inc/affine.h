@@ -38,39 +38,22 @@ typedef struct affine_tag {
 
 typedef struct affine_matrix_tag {
 
-  sfixe a;
-  sfixe b;
-  sfixe c;
-  sfixe d;
+  s16 a;
+  s16 b;
+  s16 c;
+  s16 d;
 
 } affine_matrix_t;
 
 extern affine_t const identity;
 extern affine_matrix_t const matrix_identity;
 
-INLINE void affine_matrix_rot(angle rot,
-			      affine_matrix_t *base) {
-  
-  sfixe _cos_rot = cosinus(rot);
-  sfixe _sin_rot = sinus(rot);
-  affine_matrix_t temp = { 
-    smul(base->a, _cos_rot) - smul(base->c, _sin_rot),
-    smul(base->b, _cos_rot) - smul(base->d, _sin_rot),
-    smul(base->a, _sin_rot) + smul(base->c, _cos_rot),
-    smul(base->b, _sin_rot) + smul(base->d, _cos_rot),
-  };
+INLINE void affine_to_bios_obj(bios_obj_affine_t *bios_aff,
+			       affine_t *affine) {
 
-  *base = temp;
-  
-}
-
-INLINE void affine_matrix_scale(sfixe dx,sfixe dy,
-				affine_matrix_t *base) {
-
-  base->a = fmul(base->a, dx);
-  base->b = fmul(base->b, dx);
-  base->c = fmul(base->c, dy);
-  base->d = fmul(base->d, dy);
+  bios_aff->scale_x = affine->scale.x;
+  bios_aff->scale_y = affine->scale.y;
+  bios_aff->rotation = angle_format(affine->rotation);
 
 }
 
@@ -88,42 +71,6 @@ INLINE void affine_matrix_shear(sfixe hx,sfixe hy,
 
 }
 
-INLINE void affine_matrix_to_object(object_affine_t *obj_affine,
-				    affine_matrix_t *affine_mat) {
-
-  obj_affine->attr0 = affine_mat->a;
-  obj_affine->attr1 = affine_mat->b;
-  obj_affine->attr2 = affine_mat->c;
-  obj_affine->attr3 = affine_mat->d;
-
-}
-
-INLINE void affine_matrix_to_background(background_affine_t *bgd_affine,
-					affine_matrix_t *affine_mat) {
-
-  bgd_affine->attr0 = affine_mat->a;
-  bgd_affine->attr1 = affine_mat->b;
-  bgd_affine->attr2 = affine_mat->c;
-  bgd_affine->attr3 = affine_mat->d;
-
-}
-
-INLINE void affine_to_matrix(affine_matrix_t *affine_mat,
-			     affine_t *affine) {
-
-  *affine_mat = matrix_identity;
-
-  affine_matrix_rot(affine->rotation,
-  		    affine_mat);
-  affine_matrix_scale(affine->scale.x,
-		      affine->scale.y,
-		      affine_mat);
-  affine_matrix_shear(affine->shear.x,
-  		      affine->shear.y,
-  		      affine_mat);
-
-}
-
 INLINE void invert_matrix(affine_matrix_t *inv,
 			  affine_matrix_t *mat) {
 
@@ -135,50 +82,95 @@ INLINE void invert_matrix(affine_matrix_t *inv,
 
 }
 
-INLINE void affine_to_object(object_affine_attribute_t *obj_attr,
-			     object_affine_t *obj_affine,
-			     affine_t *affine) {
+INLINE void affine_to_object(object_affine_attribute_t *dst_attr,
+			     object_affine_t *dst,
+			     affine_t *src,
+			     u32 nb_elements) {
+  
+  u32 i;
+  affine_matrix_t matrix[1];
+  bios_obj_affine_t temp[1];
 
-  affine_matrix_t temp = matrix_identity;
-  affine_matrix_t temp_inv = matrix_identity;
-  s32 module = (MODE_AFFINE_DOUBLE == obj_attr->mode) ? 0 : 1;
-  u32 size_x = object_sizes[obj_attr->size][obj_attr->shape][0];
-  u32 size_y = object_sizes[obj_attr->size][obj_attr->shape][1];
-  s32 screen_anchor_x = fint(affine->screen_anchor.x) - (size_x >> module);
-  s32 screen_anchor_y = fint(affine->screen_anchor.y) - (size_y >> module);
-  s32 map_anchor_x = fint(affine->map_anchor.x) - (size_x >> 1);
-  s32 map_anchor_y = fint(affine->map_anchor.y) - (size_y >> 1);
+  affine_to_bios_obj(temp,
+		     src);
 
-  affine_to_matrix(&temp,
-		   affine);
-  invert_matrix(&temp_inv,
-		&temp);
+  bios_obj_affine_set(temp,
+		      matrix,
+		      1, 2);
 
-  obj_attr->X = screen_anchor_x
-    - (fmul(temp_inv.a, map_anchor_x) + fmul(temp_inv.b, map_anchor_y));
-  obj_attr->Y = screen_anchor_y
-    - (fmul(temp_inv.c, map_anchor_x) + fmul(temp_inv.d, map_anchor_y));
+  if(0 != src->shear.x ||
+     0 != src->shear.y) {
 
-  affine_matrix_to_object(obj_affine,
-			  &temp);
+    affine_matrix_shear(src->shear.x, src->shear.y,
+			matrix);
+
+  }
+
+  dst->attr0 = matrix->a;
+  dst->attr1 = matrix->b;
+  dst->attr2 = matrix->c;
+  dst->attr3 = matrix->d;
+
+  for(i = 0 ; i < nb_elements ; i++) {
+
+    s32 module = (MODE_AFFINE_DOUBLE == dst_attr[i].mode) ? 0 : 1;
+    u32 size_x = object_sizes[dst_attr[i].size][dst_attr[i].shape][0];
+    u32 size_y = object_sizes[dst_attr[i].size][dst_attr[i].shape][1];
+    s32 screen_anchor_x = fint(src->screen_anchor.x) - (size_x >> module);
+    s32 screen_anchor_y = fint(src->screen_anchor.y) - (size_y >> module);
+
+    dst_attr[i].X = screen_anchor_x;
+    dst_attr[i].Y = screen_anchor_y;
+
+    if(0 != src->map_anchor.x ||
+       0 != src->map_anchor.y) {
+
+      affine_matrix_t matrix_inv = matrix_identity;
+      s32 map_anchor_x = fint(src->map_anchor.x) - (size_x >> 1);
+      s32 map_anchor_y = fint(src->map_anchor.y) - (size_y >> 1);
+
+      invert_matrix(&matrix_inv,
+		    matrix);
+      dst_attr[i].X -= (fmul(matrix_inv.a, map_anchor_x)
+		      + fmul(matrix_inv.b, map_anchor_y));
+      dst_attr[i].Y -= (fmul(matrix_inv.c, map_anchor_x)
+		      + fmul(matrix_inv.d, map_anchor_y));
+
+    }
+  
+  }
 
 }
 
-INLINE void affine_to_background(background_affine_t *bkg_affine,
-				 affine_t *affine) {
+INLINE void affine_to_bios_bg(bios_bg_affine_t *bios_aff,
+			      affine_t *affine) {
 
-  affine_matrix_t temp = matrix_identity;
+  bios_aff->map_anchor_x = affine->map_anchor.x;
+  bios_aff->map_anchor_y = affine->map_anchor.y;
+  bios_aff->screen_anchor_x = (affine->screen_anchor.x) >> FIXE_FORMAT;
+  bios_aff->screen_anchor_y = (affine->screen_anchor.y) >> FIXE_FORMAT;
+  bios_aff->scale_x = affine->scale.x;
+  bios_aff->scale_y = affine->scale.y;
+  bios_aff->rotation = angle_format(affine->rotation);
 
-  affine_to_matrix(&temp,
-		   affine);
+}
 
-  affine_matrix_to_background(bkg_affine,
-			      &temp);
+INLINE void affine_to_background(background_affine_t *dst,
+				 affine_t *src,
+				 u32 num_elements) {
 
-  bkg_affine->dx = affine->map_anchor.x - 
-    (fmul(temp.a,affine->screen_anchor.x) + fmul(temp.b,affine->screen_anchor.y));
-  bkg_affine->dy = affine->map_anchor.y - 
-    (fmul(temp.c,affine->screen_anchor.x) + fmul(temp.d,affine->screen_anchor.y));
+  u32 i;
+  bios_bg_affine_t temp[num_elements];
+
+  for(i = 0 ; i < num_elements ; i++) {
+
+    affine_to_bios_bg(temp + i,
+		      src + i);
+
+  }
+  bios_bg_affine_set(temp,
+		     dst,
+		     num_elements);
 
 }
 

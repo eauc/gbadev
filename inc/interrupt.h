@@ -55,7 +55,7 @@ typedef union interrupt_control_tag {
 
 #define _reg_interrupt_enable     ((interrupt_control_t *)(MEM_IO + 0x0200))
 #define _reg_interrupt_flag       ((interrupt_control_t *)(MEM_IO + 0x0202))
-#define _reg_interrupt_flag_bios  ((interrupt_control_t *)(MEM_IO + 0x7FF8))
+#define _reg_interrupt_flag_bios  ((interrupt_control_t *)(MEM_IC_WRAM + 0x7FF8))
 
 #define REG_INTERRUPT_ENABLE        (*_reg_interrupt_enable)
 #define REG_INTERRUPT_FLAG          (*_reg_interrupt_flag)
