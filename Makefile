@@ -1,5 +1,6 @@
 PROG = essai
 TEST =  default \
+	bckbmp  \
 	bckgnd  \
 	bgdaff  \
 	bios    \
