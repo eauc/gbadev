@@ -66,6 +66,7 @@ extern interrupt_handler_t interrupt_vector[];
 
 IWRAM_CODE void interrupt_default_handler(void);
 IWRAM_CODE void interrupt_vector_handler(void);
+IWRAM_CODE void interrupt_vector_reentrant_handler(void);
 
 INLINE interrupt_handler_t interrupt_remove(interrupt_flag_t number) {
 
@@ -128,6 +129,15 @@ INLINE void interrupt_init_vector(void) {
 
   interrupt_set(default_enable, 
 		(interrupt_handler_t)interrupt_vector_handler);
+
+}
+
+INLINE void interrupt_init_vector_reentrant(void) {
+
+  interrupt_control_t default_enable = { 0 };
+
+  interrupt_set(default_enable, 
+		(interrupt_handler_t)interrupt_vector_reentrant_handler);
 
 }
 

@@ -12,10 +12,10 @@ $(LIB_TARGET) : $(LIB_OBJECTS)
 	$(AR) $@ $^
 
 $(LIB_ASOBJECTS_ARM) : $(OBJDIR)/lib-%.arm.o : $(LIBDIR)/%.arm.s
-	$(AS) $(ASFLAGS) $(ARCH_THUMB) $< -o $@
+	$(AS) $(ASFLAGS) $(ARCH) $< -o $@
 
 $(LIB_ASOBJECTS_THUMB) : $(OBJDIR)/lib-%.o : $(LIBDIR)/%.s
-	$(AS) $(ASFLAGS) $(ARCH_THUMB) $< -o $@
+	$(AS) $(ASFLAGS) $(ARCH) $< -o $@
 
 $(LIB_COBJECTS_ARM) : $(OBJDIR)/lib-%.arm.o : $(LIBDIR)/%.arm.c
 	$(CC) $(CFLAGS) $(ARCH_ARM) -c $< -o $@

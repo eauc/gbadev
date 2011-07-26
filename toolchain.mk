@@ -23,7 +23,7 @@ EMU       = $(DEBUG_PREFIX) $(EMU_CMD)
 TAGSCMD   = etags
 
 ARCH       = -mthumb-interwork
-ARCH_THUMB = -mthumb $(ARCH)
+ARCH_THUMB = -mthumb -mlong-calls $(ARCH)
 ARCH_ARM   = -marm -mlong-calls $(ARCH)
 
 CFLAGS    = -Wall -Wextra -O2\

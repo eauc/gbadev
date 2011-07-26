@@ -6,6 +6,8 @@
 #include <interrupt.h>
 
 IWRAM_CODE void hblank_handler(void);
+IWRAM_CODE void vcount_handler(void);
+IWRAM_CODE void vcount_handler_reentrant(void);
 
 #define CBB_0 0
 #define SBB_0 28
@@ -96,14 +98,16 @@ int main(void) {
   REG_DISPLAY_CONTROL.render_background0 = TRUE;
   REG_DISPLAY_CONTROL.render_object = TRUE;
   REG_DISPLAY_STATUS.enable_hblank_irq = TRUE;
+  REG_DISPLAY_STATUS.vtrigger = 80;
+  REG_DISPLAY_STATUS.enable_vcount_irq = TRUE;
 
   bg0_map[se_prev].tile_index++;
 
   interrupt_init_vector();
-  interrupt_control_t temp = { 0 };
-  temp.hblank = TRUE;
   interrupt_add(INTERRUPT_HBLANK,
 		(interrupt_handler_t)hblank_handler);
+  interrupt_add(INTERRUPT_VCOUNT,
+  		(interrupt_handler_t)vcount_handler);
 
   while(1) {
 
@@ -127,6 +131,37 @@ int main(void) {
     }
     REG_BACKGROUND0_OFFSET = bg0_offset;
 
+    if(input_hit_status.L) {
+
+      interrupt_init_vector();
+      interrupt_add(INTERRUPT_HBLANK,
+		    (interrupt_handler_t)hblank_handler);
+      interrupt_add(INTERRUPT_VCOUNT,
+		    (interrupt_handler_t)vcount_handler);
+
+    }
+    else if(input_hit_status.R) {
+
+      interrupt_init_vector_reentrant();
+      interrupt_add(INTERRUPT_HBLANK,
+		    (interrupt_handler_t)hblank_handler);
+      interrupt_add(INTERRUPT_VCOUNT,
+		    (interrupt_handler_t)vcount_handler);
+
+    }
+    if(input_hit_status.A) {
+
+      interrupt_add(INTERRUPT_VCOUNT,
+		    (interrupt_handler_t)vcount_handler);
+
+    }
+    else if(input_hit_status.B) {
+
+      interrupt_add(INTERRUPT_VCOUNT,
+		    (interrupt_handler_t)vcount_handler_reentrant);
+
+    }
+    
   }
   return 0;
 
