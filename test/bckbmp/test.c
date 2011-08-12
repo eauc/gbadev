@@ -32,6 +32,13 @@ extern u32 panty_4bpp_tiled_tiles_width;
 extern u32 panty_4bpp_tiled_tiles_height;
 extern tile_4bpp_t panty_4bpp_tiled_tiles[];
 
+extern u32 font_palette_size;
+extern u16 font_palette[];
+extern u32 font_tiles_size;
+extern u32 font_tiles_width;
+extern u32 font_tiles_height;
+extern tile_4bpp_t font_tiles[];
+
 int main(void) {
 
   u32 i, j;
@@ -138,15 +145,14 @@ int main(void) {
       }
 
     }
-#if 0
     else if(input_hit_status.R) {
 
-      REG_DISPLAY_CONTROL.mode = 1;
+      REG_DISPLAY_CONTROL.mode = 0;
       REG_DISPLAY_CONTROL.render_background2 = TRUE;
 
       REG_BACKGROUND2_CONTROL.charblock_index = 0;
       REG_BACKGROUND2_CONTROL.screenblock_index = 16;
-      REG_BACKGROUND2_CONTROL.size = AFFINE_SIZE_32_32;
+      REG_BACKGROUND2_CONTROL.size = REGULAR_SIZE_32_32;
       REG_BACKGROUND2_CONTROL.palette_bpp = PALETTE_4BPP;
       REG_BACKGROUND2_OFFSET.Y = 0;
       REG_BACKGROUND2_OFFSET.Y = 0;
@@ -157,43 +163,38 @@ int main(void) {
       REG_BACKGROUND2_AFFINE.dx = 0;
       REG_BACKGROUND2_AFFINE.dy = 0;
 
-      for(i = 0 ; i < panty_4bpp_tiled_palette_size ; i++) {
+      for(i = 0 ; i < font_palette_size ; i++) {
 
 	MEM_PALBLOCK_4BPP[PALBLOCK_4BPP_BACKGROUND][i] =
-	  panty_4bpp_tiled_palette[i];
+	  font_palette[i];
 
       }
 
-      for(i = 0 ; i < panty_4bpp_tiled_tiles_size ; i++) {
+      for(i = 0 ; i < font_tiles_size ; i++) {
 
-	MEM_TILE_4BPP[0][i] = panty_4bpp_tiled_tiles[i];
+	MEM_TILE_4BPP[0][i] = font_tiles[i];
 
       }
 
       u32 *mem_map = (u32 *)(MEM_MAP[16]);
-      for(i = 0 ; i < panty_4bpp_tiled_tiles_height ; i++) {
+      for(i = 0 ; i < 3 ; i++) {
 
-      	for(j = 0 ; j < panty_4bpp_tiled_tiles_width/4+1 ; j++) {
+	for(j = 0 ; j < 15 ; j++) {
 
-      	  u32 pixel = 0;
-      	  u32 base_tile = i * panty_4bpp_tiled_tiles_width + j * 4;
-      	  pixel += ((base_tile + 0) & 0xFF) << 0;
-      	  pixel += ((base_tile + 1) & 0xFF) << 8;
-      	  pixel += ((base_tile + 2) & 0xFF) << 16;
-      	  pixel += ((base_tile + 3) & 0xFF) << 24;
+	  u32 index = i * 30 + 2 * j;
+	  u32 pixel = index + ((index + 1) << 16);
 
-      	  mem_map[i * 8 + j] = pixel;
+	  mem_map[i * 16 + j] = pixel;
+
+	}
     
-      	}
-	
       }
-      /* mem_map[0] = 0x03020100; */
-      /* mem_map[1] = 0x04050607; */
-      /* mem_map[2] = 0x08090a0b; */
-      /* mem_map[3] = 0x0c0d0e0f; */
+      mem_map[48] = 0x005B005A;
+      mem_map[49] = 0x005D005C;
+      mem_map[50] = 0x0000005E;
 
     }
-#endif
+
   }
 
 }

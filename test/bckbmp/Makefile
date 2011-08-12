@@ -1,5 +1,6 @@
 test_bckbmp_CSOURCES =     \
 	test.c             \
+	font.c             \
 	panty_24bpp.c      \
 	panty_8bpp.c       \
 	panty_8bpp_tiled.c \
